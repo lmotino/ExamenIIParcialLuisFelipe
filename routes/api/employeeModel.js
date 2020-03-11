@@ -6,20 +6,46 @@ function employeeModel(db){
   lib.getEmployees = (handler)=>{
     // implementar
     // obtener todos los documentos
-    return handler(new Error("No Implementado"), null);
+
+    empColl.find({}).toArray(handler);
+    //return handler(new Error("No Implementado"), null);
   }
 
   lib.getEmployeesById = (id, handler) => {
     // implementar
     // Obtener un Documento solo mostrar
     // email, phone, name y age
-    return handler(new Error("No Implementado"), null);
+
+    var query = { "_id": new ObjectID(id) };
+    empColl.findOne(
+      query,
+      (err, doc) => {
+        if (err) {
+          return handler(err, null);
+        }
+        return handler(null, doc);
+      }
+    ); //findOne
+    //return handler(new Error("No Implementado"), null);
   }
 
   lib.getEmployeesByCompany = (company, handler) => {
     // implementar
     // solo mostrar name, email, company
-    return handler(new Error("No Implementado"), null);
+  
+    var query = { "company": new company(company) };
+    empColl.findOne(
+      query,
+      (err, doc) => {
+        if (err) {
+          return handler(err, null);
+        }
+        return handler(null, doc);
+      }
+    ); 
+
+
+    //return handler(new Error("No Implementado"), null);
   }
 
   lib.getEmployeesByTag = (tag, handler) => {
@@ -41,7 +67,18 @@ function employeeModel(db){
   lib.removeEmployee = (id, handler) => {
     //Implementar
     //Se requiere eliminar un documento de la colección
-    return handler(new Error("No Implementado"), null);
+
+    var query = {"_id": new ObjectID(id)};
+    empColl.deleteOne(
+      query,
+      (err, rslt)=>{
+        if(err){
+          return handler(err, null);
+        }
+        return handler(null, rslt.result);
+      }
+    ); //deleteOne
+    //return handler(new Error("No Implementado"), null);
   }
 
   lib.increaseAgeToAll = (ageDelta, handler) => {
